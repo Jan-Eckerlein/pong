@@ -1,6 +1,3 @@
-from cmath import rect
-from re import X
-from tokenize import Double
 import pygame
 import random
 pygame.init
