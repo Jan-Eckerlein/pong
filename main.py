@@ -72,8 +72,8 @@ class Ball:
         self.position.add_vector(self.velocity)
         
     def update_rect(self):
-        self.rect.x = self.position.x
-        self.rect.y = self.position.y
+        self.rect.x = round(self.position.x)
+        self.rect.y = round(self.position.y)
         
     def update(self):
         self.update_position()
@@ -118,8 +118,9 @@ def main():
                 run = False
                 break
             
-        ball.update()
         
+            
+        ball.update()
         render(ball)
         
     pygame.quit
