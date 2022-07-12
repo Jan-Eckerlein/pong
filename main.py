@@ -57,10 +57,6 @@ class Ball:
         self.velocity = velocity
         self.rect = pygame.Rect(position.x, position.y, width, height)
         
-    def update_rect_position(self):
-        self.rect.x = self.position.x
-        self.rect.y = self.position.y
-        
     #SEEDERS
     def random_velocity(self, velocity_min = SPEEDSEEDER[0], velocity_max = SPEEDSEEDER[1]):        
         self.velocity.x = random.randrange(velocity_min, velocity_max)
@@ -69,6 +65,19 @@ class Ball:
     def random_position(self, position_min: int = POSITIONSEEDER[0], position_max: int = POSITIONSEEDER[1]):
         self.position.x = random.randrange(position_min, position_max)
         self.position.y = random.randrange(position_min, position_max)
+        
+    #UPDATE
+    def update_position(self):
+        self.position.add_vector(self.velocity)
+        
+    def update_rect(self):
+        self.rect.x = self.position.x
+        self.rect.y = self.position.y
+        
+    def update(self):
+        self.update_position()
+        self.update_rect()
+        
         
     
 class Paddle:
