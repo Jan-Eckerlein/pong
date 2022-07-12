@@ -13,7 +13,12 @@ BACKGROUND = (10, 10, 10)
 #GAMEPLAY SETTING
 SPEEDSEEDER = [1, 5]
 POSITIONSEEDER = [20, HEIGHT-20]
+
 DEFAULTBALLDIM = 10
+
+PADDLEOFFSET = 10
+PADDLEVELOCITY = 10
+
 
 pygame.display.set_caption("Pong")
 
@@ -66,6 +71,21 @@ class Ball:
         self.position.y = random.randrange(position_min, position_max)
         
     
+class Paddle:
+    rect: pygame.Rect
+    offset = None
+    velocity  = None
+    location = 0
+    max_location = 0
+    
+    def __init__(self, rect: pygame.Rect, offset = PADDLEOFFSET, velocity = PADDLEVELOCITY) -> None:
+        self.rect = rect
+        self.offset = offset
+        self.velocity = velocity
+        self.set_max_location()
+        
+    def set_max_location(self):
+        self.max_location = HEIGHT - self.rect.height
     
     
 
