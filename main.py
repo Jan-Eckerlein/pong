@@ -32,8 +32,8 @@ class Vector:
     
     # VECTOR MATH    
     def add_vector(self, vector: object):
-        self.x = vector.x
-        self.y = vector.y
+        self.x += vector.x
+        self.y += vector.y
         
     def scale(self, scalar: float):
         self.x = self.x * scalar
