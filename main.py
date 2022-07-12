@@ -41,10 +41,11 @@ class Vector:
         
     # ACTIONS
     def bounce_x(self):
-        self.x = -self.x
+        self.x *= -1
         
     def bounce_y(self):
-        self.y = -self.y
+        self.y *= -1
+
         
         
 
@@ -74,6 +75,7 @@ class Ball:
     def update_rect(self):
         self.rect.x = round(self.position.x)
         self.rect.y = round(self.position.y)
+        
         
     def update(self):
         self.update_position()
@@ -107,7 +109,7 @@ def main():
     run = True
     clock = pygame.time.Clock()
     
-    ball = Ball(Vector(WIDTH/4, HEIGHT/4), Vector(2, 1), 20, 20)
+    ball = Ball(Vector(WIDTH/4, HEIGHT/4), Vector(6, 2), 20, 20)
     
     
     while run :
@@ -118,7 +120,12 @@ def main():
                 run = False
                 break
             
-        
+        if(ball.rect.left <= 0 or ball.rect.right >= WIDTH):
+            ball.velocity.bounce_x()
+            
+        if(ball.rect.top <= 0 or ball.rect.bottom >= HEIGHT):
+            ball.velocity.bounce_y()
+            
             
         ball.update()
         render(ball)
