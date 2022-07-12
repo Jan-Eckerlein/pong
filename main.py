@@ -9,6 +9,7 @@ FPS = 60
 
 #COLORS, FONTS
 BACKGROUND = (10, 10, 10)
+WHITE = (255, 255, 255)
 
 #GAMEPLAY SETTING
 SPEEDSEEDER = [1, 5]
@@ -97,10 +98,17 @@ class Paddle:
         self.max_location = HEIGHT - self.rect.height
     
     
+def render(ball):
+        WIN.fill(BACKGROUND)
+        pygame.draw.rect(WIN, WHITE, ball.rect)
+        pygame.display.update()
 
 def main():
     run = True
     clock = pygame.time.Clock()
+    
+    ball = Ball(Vector(WIDTH/4, HEIGHT/4), Vector(2, 1), 20, 20)
+    
     
     while run :
         clock.tick(FPS)
@@ -110,9 +118,9 @@ def main():
                 run = False
                 break
             
-
-        WIN.fill(BACKGROUND)
-        pygame.display.update()
+        ball.update()
+        
+        render(ball)
         
     pygame.quit
 
