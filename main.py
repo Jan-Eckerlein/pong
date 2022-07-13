@@ -18,7 +18,7 @@ POSITIONSEEDER = [20, HEIGHT-20]
 DEFAULTBALLDIM = 10
 
 PADDLEOFFSET = 10
-PADDLEVELOCITY = 10
+PADDLE_VELOCITY = 10
 
 
 pygame.display.set_caption("Pong")
@@ -90,7 +90,7 @@ class Paddle:
     location = 0
     max_location = 0
     
-    def __init__(self, rect: pygame.Rect, velocity = PADDLEVELOCITY) -> None:
+    def __init__(self, rect: pygame.Rect, velocity = PADDLE_VELOCITY) -> None:
         self.rect = rect
         self.velocity = velocity
         self.set_max_location()
@@ -98,6 +98,22 @@ class Paddle:
     def set_max_location(self):
         self.max_location = HEIGHT - self.rect.height
     
+    
+def move_paddle_left(keys_pressed, paddle: Paddle) : 
+    if keys_pressed[pygame.K_w] and (paddle.rect.top - PADDLE_VELOCITY) >= 0: #UP
+        paddle.rect.y -= PADDLE_VELOCITY
+        paddle.velocity = PADDLE_VELOCITY
+    if keys_pressed[pygame.K_s] and (paddle.rect.bottom + PADDLE_VELOCITY) <= HEIGHT: #DOWN
+        paddle.rect.y += PADDLE_VELOCITY
+        paddle.velocity = -PADDLE_VELOCITY
+    
+def move_paddle_right(keys_pressed, paddle: Paddle) : 
+    if keys_pressed[pygame.K_UP] and (paddle.rect.top - PADDLE_VELOCITY) >= 0: #UP
+        paddle.rect.y -= PADDLE_VELOCITY
+        paddle.velocity = PADDLE_VELOCITY
+    if keys_pressed[pygame.K_DOWN] and (paddle.rect.bottom + PADDLE_VELOCITY) <= HEIGHT: #DOWN
+        paddle.rect.y += PADDLE_VELOCITY
+        paddle.velocity = -PADDLE_VELOCITY
     
 def render(ball: Ball, paddles: (Paddle)):
         WIN.fill(BACKGROUND)
@@ -134,7 +150,14 @@ def main():
         if(ball.rect.top <= 0 or ball.rect.bottom >= HEIGHT):
             ball.velocity.bounce_y()
             
-            
+        for paddle in (paddle_left, paddle_right):
+            if paddle.rect.colliderect(ball.rect):
+                ball.velocity.bounce_x()
+        
+        keys_pressed = pygame.key.get_pressed()
+        move_paddle_left(keys_pressed, paddle_left)
+        move_paddle_right(keys_pressed, paddle_right)
+        
         ball.update()
         render(ball, (paddle_left, paddle_right))
         
