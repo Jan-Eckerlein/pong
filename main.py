@@ -90,9 +90,8 @@ class Paddle:
     location = 0
     max_location = 0
     
-    def __init__(self, rect: pygame.Rect, offset = PADDLEOFFSET, velocity = PADDLEVELOCITY) -> None:
+    def __init__(self, rect: pygame.Rect, velocity = PADDLEVELOCITY) -> None:
         self.rect = rect
-        self.offset = offset
         self.velocity = velocity
         self.set_max_location()
         
@@ -100,9 +99,13 @@ class Paddle:
         self.max_location = HEIGHT - self.rect.height
     
     
-def render(ball):
+def render(ball: Ball, paddles: (Paddle)):
         WIN.fill(BACKGROUND)
         pygame.draw.rect(WIN, WHITE, ball.rect)
+        
+        for paddle in paddles:
+            pygame.draw.rect(WIN, WHITE, paddle)
+            
         pygame.display.update()
 
 def main():
@@ -110,6 +113,11 @@ def main():
     clock = pygame.time.Clock()
     
     ball = Ball(Vector(WIDTH/4, HEIGHT/4), Vector(6, 2), 20, 20)
+    
+    paddle_left = Paddle(pygame.Rect(PADDLEOFFSET, 0, 20, 80))
+    paddle_right = Paddle(pygame.Rect(WIDTH - PADDLEOFFSET - 10, 0, 20, 80))
+    
+        
     
     
     while run :
@@ -128,7 +136,7 @@ def main():
             
             
         ball.update()
-        render(ball)
+        render(ball, (paddle_left, paddle_right))
         
     pygame.quit
 
