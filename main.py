@@ -39,6 +39,16 @@ class Vector:
     def scale(self, scalar: float):
         self.x = self.x * scalar
         
+    def random(self, min: float=0, max: float=1):
+        self.random_x(self, min, max)
+        self.random_y(self, min, max)
+        
+    def random_x(self, min: float=0, max: float=1):
+        self.x = random.randrange(min, max)
+        
+    def random_y(self,min: float=0, max: float=1):
+        self.y = random.randrange(min, max)
+        
     # ACTIONS
     def bounce_x(self):
         self.x *= -1
