@@ -84,6 +84,11 @@ class Ball:
         self.position.y = random.randrange(position_min, position_max)
         
     #UPDATE
+    def center_ball(self):
+        self.position.x = float(WIDTH/2) 
+        self.position.y = float(HEIGHT/2)
+        self.update
+    
     def update_position(self):
         self.position.add_vector(self.velocity)
         
@@ -163,7 +168,7 @@ def main():
     wait = None
     clock = pygame.time.Clock()
     
-    ball = Ball(Vector(WIDTH/4, HEIGHT/4), Vector(6, 2), 20, 20)
+    ball = Ball(Vector(WIDTH/2, HEIGHT/2), Vector(6, 2), 20, 20)
     paddle_left = Paddle(pygame.Rect(PADDLEOFFSET, 0, 20, 80))
     paddle_right = Paddle(pygame.Rect(WIDTH - PADDLEOFFSET - 10, 0, 20, 80))
     
@@ -177,10 +182,12 @@ def main():
             
             if event.type == RIGHT_LOST:
                 print("right lost")
+                ball.center_ball()
                 wait = seconds(2)
             
             if event.type == LEFT_LOST:
                 print("left lost")
+                ball.center_ball()
                 wait = seconds(2)
                 
         if(not wait):
@@ -190,7 +197,6 @@ def main():
             
             ball.handle_collision(paddle_left, paddle_right)
             ball.update()
-            
         else:
             wait -= 1
         
