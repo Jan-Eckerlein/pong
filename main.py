@@ -98,8 +98,12 @@ class Ball:
         
     def handle_collision(self, paddle_left, paddle_right):
         
-        if(self.rect.left <= 0 or self.rect.right >= WIDTH):
-            self.velocity.bounce_x()
+        if(self.rect.left <= 0):
+            pygame.event.post(pygame.event.Event(LEFT_LOST))
+            
+            
+        if(self.rect.right >= WIDTH):
+            pygame.event.post(pygame.event.Event(RIGHT_LOST))
             
         if(self.rect.top <= 0 or self.rect.bottom >= HEIGHT):
             self.velocity.bounce_y()
@@ -172,6 +176,11 @@ def main():
                 run = False
                 break
             
+            if event.type == RIGHT_LOST:
+                print("right lost")
+            
+            if event.type == LEFT_LOST:
+                print("left lost")
         
         keys_pressed = pygame.key.get_pressed()
         move_paddle_left(keys_pressed, paddle_left)
