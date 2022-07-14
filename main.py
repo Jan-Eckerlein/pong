@@ -21,6 +21,11 @@ PADDLEOFFSET = 10
 PADDLE_VELOCITY = 10
 
 
+#USER EVENTS
+LEFT_LOST = pygame.USEREVENT + 1
+RIGHT_LOST= pygame.USEREVENT + 2
+
+
 pygame.display.set_caption("Pong")
 
 class Vector:
@@ -91,6 +96,18 @@ class Ball:
         self.update_position()
         self.update_rect()
         
+    def handle_collision(self, paddle_left, paddle_right):
+        
+        if(self.rect.left <= 0 or self.rect.right >= WIDTH):
+            self.velocity.bounce_x()
+            
+        if(self.rect.top <= 0 or self.rect.bottom >= HEIGHT):
+            self.velocity.bounce_y()
+            
+        for paddle in (paddle_left, paddle_right):
+            if paddle.rect.colliderect(self.rect):
+                self.velocity.bounce_x()
+        
         
     
 class Paddle:
@@ -133,6 +150,7 @@ def render(ball: Ball, paddles: (Paddle)):
             pygame.draw.rect(WIN, WHITE, paddle)
             
         pygame.display.update()
+        
 
 def main():
     run = True
@@ -154,20 +172,12 @@ def main():
                 run = False
                 break
             
-        if(ball.rect.left <= 0 or ball.rect.right >= WIDTH):
-            ball.velocity.bounce_x()
-            
-        if(ball.rect.top <= 0 or ball.rect.bottom >= HEIGHT):
-            ball.velocity.bounce_y()
-            
-        for paddle in (paddle_left, paddle_right):
-            if paddle.rect.colliderect(ball.rect):
-                ball.velocity.bounce_x()
         
         keys_pressed = pygame.key.get_pressed()
         move_paddle_left(keys_pressed, paddle_left)
         move_paddle_right(keys_pressed, paddle_right)
         
+        ball.handle_collision(paddle_left, paddle_right)
         ball.update()
         render(ball, (paddle_left, paddle_right))
         
