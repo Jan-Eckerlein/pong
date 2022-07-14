@@ -155,18 +155,17 @@ def render(ball: Ball, paddles: (Paddle)):
             
         pygame.display.update()
         
+def seconds(seconds):
+    return seconds * FPS
 
 def main():
     run = True
+    wait = None
     clock = pygame.time.Clock()
     
     ball = Ball(Vector(WIDTH/4, HEIGHT/4), Vector(6, 2), 20, 20)
-    
     paddle_left = Paddle(pygame.Rect(PADDLEOFFSET, 0, 20, 80))
     paddle_right = Paddle(pygame.Rect(WIDTH - PADDLEOFFSET - 10, 0, 20, 80))
-    
-        
-    
     
     while run :
         clock.tick(FPS)
@@ -178,16 +177,23 @@ def main():
             
             if event.type == RIGHT_LOST:
                 print("right lost")
+                wait = seconds(2)
             
             if event.type == LEFT_LOST:
                 print("left lost")
+                wait = seconds(2)
+                
+        if(not wait):
+            keys_pressed = pygame.key.get_pressed()
+            move_paddle_left(keys_pressed, paddle_left)
+            move_paddle_right(keys_pressed, paddle_right)
+            
+            ball.handle_collision(paddle_left, paddle_right)
+            ball.update()
+            
+        else:
+            wait -= 1
         
-        keys_pressed = pygame.key.get_pressed()
-        move_paddle_left(keys_pressed, paddle_left)
-        move_paddle_right(keys_pressed, paddle_right)
-        
-        ball.handle_collision(paddle_left, paddle_right)
-        ball.update()
         render(ball, (paddle_left, paddle_right))
         
     pygame.quit
