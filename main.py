@@ -116,6 +116,7 @@ class Ball:
         for paddle in (paddle_left, paddle_right):
             if paddle.rect.colliderect(self.rect):
                 self.velocity.bounce_x()
+                self.velocity.y += paddle.velocity * 0.5
         
         
     
@@ -138,18 +139,18 @@ class Paddle:
 def move_paddle_left(keys_pressed, paddle: Paddle) : 
     if keys_pressed[pygame.K_w] and (paddle.rect.top - PADDLE_VELOCITY) >= 0: #UP
         paddle.rect.y -= PADDLE_VELOCITY
-        paddle.velocity = PADDLE_VELOCITY
+        paddle.velocity = -PADDLE_VELOCITY
     if keys_pressed[pygame.K_s] and (paddle.rect.bottom + PADDLE_VELOCITY) <= HEIGHT: #DOWN
         paddle.rect.y += PADDLE_VELOCITY
-        paddle.velocity = -PADDLE_VELOCITY
+        paddle.velocity = PADDLE_VELOCITY
     
 def move_paddle_right(keys_pressed, paddle: Paddle) : 
     if keys_pressed[pygame.K_UP] and (paddle.rect.top - PADDLE_VELOCITY) >= 0: #UP
         paddle.rect.y -= PADDLE_VELOCITY
-        paddle.velocity = PADDLE_VELOCITY
+        paddle.velocity = -PADDLE_VELOCITY
     if keys_pressed[pygame.K_DOWN] and (paddle.rect.bottom + PADDLE_VELOCITY) <= HEIGHT: #DOWN
         paddle.rect.y += PADDLE_VELOCITY
-        paddle.velocity = -PADDLE_VELOCITY
+        paddle.velocity = PADDLE_VELOCITY
     
 def render(ball: Ball, paddles: (Paddle)):
         WIN.fill(BACKGROUND)
@@ -174,6 +175,9 @@ def main():
     
     while run :
         clock.tick(FPS)
+        
+        for paddle in (paddle_left, paddle_right):
+            paddle.velocity = 0
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
